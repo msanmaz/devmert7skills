@@ -1,22 +1,27 @@
-# devmert7-agents
+# devmert7skills
 
 Kodlama ajanın için kurallar ve 5 skill. Claude Code, Codex, Cursor ve Copilot ile çalışır.
 
 ```
-devmert7-agents/
+devmert7skills/
 ├── AGENTS.md                  stack'ine göre üretilmiş kurallar, Doğrulama bölümlü
 ├── CLAUDE.md -> AGENTS.md     tek dosya, bütün ajanlar
 └── .claude/skills/
     ├── prove-it/              yapılanı sade, kanıtlı ve kontrol edilebilir listeye çevirir (her iş için)
     ├── hata-kurala/           düzelttiğin hatayı AGENTS.md'ye tek satır kural yapar
     ├── spec-once/             büyük işte kod yazmadan önce soru sorar, spec yazar
-    └── deploy-oncesi/         deploy öncesi kanıtlı kontrol listesi, deploy yapmaz
+    ├── deploy-oncesi/         deploy öncesi kanıtlı kontrol listesi, deploy yapmaz
+    └── react-perf-audit/      React arayüzü yavaşsa nedenini bulur, sadece rapor verir (İngilizce)
 ```
 
 ## Kurulum
 
-1. Sitedeki oluşturucudan kendi stack'in için `AGENTS.md` dosyasını indir ve repo köküne koy. Bu klasördeki `AGENTS.md` sadece örnektir (TypeScript, Next.js, pnpm, Vitest, PostgreSQL + Drizzle).
-2. `.claude/skills/` klasörünü repo köküne kopyala.
+1. Skill'leri projenin köküne kopyala:
+   ```bash
+   git clone https://github.com/msanmaz/devmert7skills /tmp/devmert7skills
+   cp -R /tmp/devmert7skills/.claude ./
+   ```
+2. `AGENTS.md` dosyasını repo köküne koy. Buradaki `AGENTS.md` bir örnektir (TypeScript, Next.js, pnpm, Vitest, PostgreSQL + Drizzle); başka bir stack kullanıyorsan komutları ve klasörleri kendi projene göre düzenle.
 3. Claude Code için CLAUDE.md'yi bağla:
    ```bash
    ln -s AGENTS.md CLAUDE.md
