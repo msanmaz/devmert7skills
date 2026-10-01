@@ -1,0 +1,72 @@
+{
+  "skill_name": "hata-kurala",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Hayır öyle değil, testleri her seferinde mock'layarak yazıyorsun. Bu repoda testler gerçek test veritabanına bağlanıyor. Bir daha böyle yapma, kural olarak ekle.",
+      "should_trigger": true,
+      "expectations": [
+        "Skill tetiklenir",
+        "Hata tek cümleyle adlandırılır ve AGENTS.md'de benzer kural aranır",
+        "Tek satırlık değişiklik unified diff olarak gösterilir ve yazmadan önce onay sorulur"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Yine aynı hatayı yaptın. Migration dosyasını elle yazmışsın, bunu geçen hafta da söylemiştim. Araçla üret demiştim. Bunu AGENTS.md'ye yazsana.",
+      "should_trigger": true,
+      "expectations": [
+        "Skill tetiklenir",
+        "Aynı hatırlatmanın ikinci kez geldiği fark edilir ve mevcut kural kontrol edilir",
+        "Tek satırlık kural diff olarak gösterilir, onaysız yazılmaz"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Bu sefer özet tablo yerine madde listesi olsun, sadece bu rapor için. Bir de şu mesajımdaki 'degişiklik' yazımını düzelt.",
+      "should_trigger": false,
+      "expectations": [
+        "Skill tetiklenmez",
+        "AGENTS.md'ye kural önerilmez"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "neden bu fonksiyonu iki dosyaya böldün? merak ettim",
+      "should_trigger": false,
+      "context": "Kullanıcı sadece soru soruyor, düzeltme ya da kural isteği yok.",
+      "expectations": [
+        "Skill tetiklenmez",
+        "Soru yanıtlanır, kural önerilmez"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Yine `../../lib/db` diye import etmişsin! Bunu düzelt ve bir daha yapma.",
+      "should_trigger": true,
+      "context": "Oturum özeti: ajan src/features/orders/handlers/create.ts dosyasına `import { db } from '../../lib/db'` ekledi. Kullanıcı düzeltti.\n\nAGENTS.md (mevcut, 96 satır, ilgili kısım):\n\n## Proje ve stack\n- TypeScript, Node 22, pnpm.\n\n## Komutlar\n- `pnpm lint`\n- `pnpm test`\n\n## Kod kuralları\n- Relative import kullanma. Dosya taşındığında yol kırılır.\n- Fonksiyonlara açık dönüş tipi yaz. Hata mesajları tipten okunur.\n\n## Doğrulama\n- `pnpm lint && pnpm test` temiz geçmeden bitti deme.",
+      "expectations": [
+        "Skill tetiklenir",
+        "Ajan 'Relative import kullanma. Dosya taşındığında yol kırılır.' satırının zaten var olduğunu söyler ya da gösterir",
+        "Aynı anlama gelen ikinci bir kural önermez ve eklemez",
+        "Sorunun kuralın yokluğu değil uyum olduğunu belirtir",
+        "İstenirse mevcut satırı netleştirmeyi ya da bir lint kuralı (örn. no-restricted-imports) önerebilir, bu bir öneridir",
+        "Onay almadan AGENTS.md'yi ya da CLAUDE.md'yi düzenlemez",
+        "Öneri varsa tek satırlık unified diff olarak gösterir ve onay sorar",
+        "Yanıtta em dash ve genel tavsiye ('dikkatli ol') yoktur"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "hayır, burada console.log yerine logger kullan",
+      "should_trigger": true,
+      "context": "İlk kez gelen, olağan tek bir düzeltme. Kullanıcı kural istemedi, aynı hata daha önce tekrarlanmadı.",
+      "expectations": [
+        "Skill tetiklenir",
+        "Ajan önce işi düzeltir (console.log yerine logger)",
+        "Yalnızca 'Bunu AGENTS.md'ye kural olarak ekleyeyim mi?' diye sorar",
+        "Taslak kural satırı ya da diff yazmaz ve dosyayı düzenlemez"
+      ]
+    }
+  ]
+}

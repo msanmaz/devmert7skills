@@ -1,0 +1,103 @@
+{
+  "skill_name": "deploy-oncesi",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "feature/odeme-sayfasi dalındaki işler bitti gibi, deploy edelim mi? Bir bakar mısın",
+      "should_trigger": true,
+      "expectations": [
+        "Skill tetiklenir",
+        "Base dal `git symbolic-ref refs/remotes/origin/HEAD` ile bulunur, bulunamazsa kullanıcıya sorulur",
+        "Diff ve AGENTS.md okunur, 6 kontrol tablosu ve tek karar satırı verilir"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "PR'ı merge etmeden önce kontrol edelim, production'a çıkacak bu. env ve migration tarafında eksik var mı?",
+      "should_trigger": true,
+      "expectations": [
+        "Skill tetiklenir",
+        "Env ve Migration kontrolleri durum ve kanıtla raporlanır"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Vercel'de deploy nasıl çalışıyor, preview ve production farkı nedir? Genel olarak anlatır mısın",
+      "should_trigger": false,
+      "expectations": [
+        "Skill tetiklenmez",
+        "Kontrol listesi üretilmez, genel açıklama verilir"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "dün gece deploy patladı, build logunda 'Module not found' var, bakar mısın",
+      "should_trigger": false,
+      "context": "Deploy zaten başarısız oldu; kullanıcı log ayıklamak istiyor.",
+      "expectations": [
+        "Skill tetiklenmez",
+        "Hata ayıklama yapılır, yayın öncesi kontrol listesi üretilmez"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "yayına hazır mı? base main. Diff aşağıda, AGENTS.md Doğrulama bölümündeki komutlar `npm run lint` ve `npm test`.\n\n```diff\ndiff --git a/src/lib/payments.ts b/src/lib/payments.ts\n--- a/src/lib/payments.ts\n+++ b/src/lib/payments.ts\n@@ -1,3 +1,6 @@\n import Stripe from 'stripe'\n+\n+const STRIPE_KEY = \"sk_live_51H...abc\"\n+export const stripe = new Stripe(STRIPE_KEY)\n```",
+      "should_trigger": true,
+      "expectations": [
+        "Skill tetiklenir",
+        "Secret kontrolü ❌ olarak işaretlenir ve src/lib/payments.ts dosyası ile satır numarası (4 civarı) verilir",
+        "Anahtarın tam değeri (sk_live_51H...abc) çıktıda yazdırılmaz; en fazla maskeli bir ipucu görünür",
+        "Karar satırı 'Hazır değil' içerir ve ❌ sayısı kontrollerle tutarlıdır",
+        "Hiçbir deploy, push, publish ya da release komutu çalıştırılmaz",
+        "Altı kontrolün her biri ✅/❌/➖/⚠️ durumlarından birini ve kanıt taşır",
+        "Anahtarın env değişkenine taşınması ve döndürülmesi (rotate) önerilir"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "canlıya almadan bir bak, yeni tablo ekledim",
+      "should_trigger": true,
+      "context": "Diff: src/db/schema.ts içinde yeni `invoices` tablosu tanımı eklendi. Diff içinde migrations/ klasöründe yeni dosya yok. Diğer kontroller temiz. AGENTS.md ## Doğrulama: `pnpm test`.",
+      "expectations": [
+        "Skill tetiklenir",
+        "Migration kontrolü ❌ olur: şema değişti ama diff'te yeni migration dosyası yok",
+        "Karar satırı 'Hazır değil' içerir"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "release öncesi kontrol, rollback notu var mı?",
+      "should_trigger": true,
+      "context": "CHANGELOG.md, RELEASE notları ve commit mesajlarında rollback notu yok. PR açıklamasına erişim yok.",
+      "expectations": [
+        "Skill tetiklenir",
+        "Rollback notu CHANGELOG, release notları ve commit mesajlarında aranır",
+        "Not bulunamayınca kullanıcıya sorulur, kontrol ❌ olur ve kısa bir not taslağı yazılır"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "pre-deploy check yap",
+      "should_trigger": true,
+      "context": "Doğrulama komutu `pytest -q` bu ortamda çalıştırılamıyor: 'pytest: command not found'. Diğer kontroller temiz, hiçbir ❌ yok.",
+      "expectations": [
+        "Skill tetiklenir",
+        "Doğrulama kontrolü ⚠️ olur ve nedeni (araç yok) yazılır",
+        "Karar 'Deploy'a hazır' değildir; 'Karar verilemedi' benzeri bir karar verilir"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "merge etmeden önce kontrol et, base main",
+      "should_trigger": true,
+      "context": "Doğrulama komutlarının hepsi geçti (çıktı: 3/3, 88 test). Env, migration, secret, bağımlılık temiz; rollback notu CHANGELOG'da var. Diff'te tek yeni dosya src/app/api/invoices/route.ts:\n```ts\nexport async function GET() {\n  const invoices = await db.select().from(invoicesTable);\n  for (const inv of invoices) {\n    inv.customer = await db.query.customers.findFirst({ where: eq(customers.id, inv.customerId) });\n  }\n  return Response.json(invoices);\n}\n```",
+      "expectations": [
+        "Skill tetiklenir",
+        "Güvenlik ve performans kontrolü ayrı bir madde olarak var ve ❌",
+        "Yetki kontrolü yokluğu, döngü içi sorgu (N+1) ve limit olmayan liste dosya:satır ya da dosya adıyla anılır",
+        "Karar 'Hazır değil' olur",
+        "Hiçbir deploy/push komutu çalıştırılmaz"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "skill_name": "spec-once",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "kullanıcılar için bildirim sistemi ekle",
+      "should_trigger": true,
+      "expectations": [
+        "Skill tetiklenir",
+        "Kod okunduktan sonra 3-5 numaralı soru önerilen cevaplarla tek mesajda sorulur",
+        "Kod yazılmaz"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "ödeme akışını yeniden yap, şu an çok karışık ve hem sepet hem sipariş hem de fatura kısmına dokunuyor galiba",
+      "should_trigger": true,
+      "expectations": [
+        "Skill tetiklenir",
+        "Önce sorular, sonra spec gelir; onaydan önce kod yoktur"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "README'deki yazım hatasını düzelt",
+      "should_trigger": false,
+      "expectations": [
+        "Skill tetiklenmez",
+        "Soru ya da spec olmadan hata doğrudan düzeltilir"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "auth akışını yeniden yapılandırmak için bir plan çıkar",
+      "should_trigger": false,
+      "context": "Claude Code plan modu açık.",
+      "expectations": [
+        "Skill tetiklenmez",
+        "Plan modunun kendi akışı kullanılır, ayrı bir soru ve spec onay akışı başlatılmaz"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "dashboard'a rapor ekle",
+      "should_trigger": true,
+      "context": "Çalışma dizininde bir web uygulaması ve AGENTS.md var. AGENTS.md Doğrulama bölümünde test, lint ve build komutları listeli.",
+      "expectations": [
+        "Skill tetiklenir",
+        "İlk yanıtta 3 ile 5 arasında numaralı soru vardır ve hepsi tek mesajdadır",
+        "Her soruda önerilen bir varsayılan cevap yazar",
+        "Sorular karar odaklıdır; repodan okunabilecek bir şey sorulmaz",
+        "Bu aşamada hiçbir dosya oluşturulmaz ya da düzenlenmez ve yanıtta uygulama kodu yoktur",
+        "Spec, kullanıcı sorulara cevap verdikten sonra yazılır",
+        "Spec sohbette yazılır, dosya oluşturulmaz",
+        "Spec Hedef, Kapsam, Kapsam dışı, Kabul kriterleri, Dokunulacak dosyalar ve Doğrulama başlıklarını içerir ve en fazla 25 satırdır",
+        "Spec'in Doğrulama bölümü AGENTS.md'deki komutlara başvurur",
+        "Spec sunulduktan sonra açık onay beklenir; aynı mesajda kodlamaya başlanmaz"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "bu fonksiyonun adını getUser'dan fetchUser'a çevir",
+      "should_trigger": false,
+      "expectations": [
+        "Skill tetiklenmez",
+        "Yeniden adlandırma soru sormadan doğrudan yapılır"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "profil sayfasına \"bildirim tercihleri\" sekmesi ekle",
+      "should_trigger": true,
+      "context": "src/app/profile/page.tsx 380 satır: üç sekmeyi tek component'te useState('genel') ile yönetiyor, üç sekmenin verisini de aynı yerde yüklüyor ve her sekmeye props ile geçiriyor. Sekmeler URL'de değil.",
+      "expectations": [
+        "Skill tetiklenir",
+        "Kod yazmadan önce 3-5 soru sorulur ya da spec onayı beklenir",
+        "Spec ya da cevapta davranışı değiştirmeyen ayrı bir 'Önce hazırlık' adımı var (sekmeleri bölmek ve/veya sekmeyi URL'ye taşımak)",
+        "Hazırlık adımı asıl özellikle aynı değişikliğe karıştırılmaz (ayrı commit/PR ya da önce o)",
+        "Spec arayüz için Bileşenler satırları içerir: veriyi kim yükler, etkileşim sahibi, yükleniyor/boş/hata hali"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "admin paneline kullanıcı listesi ekranı ekle",
+      "should_trigger": true,
+      "context": "src/app/admin/ altında her ekran kendi klasöründe, kendi service çağrısı ve loading.tsx/error.tsx dosyasıyla duruyor (ör. admin/orders). Yapı temiz ve tutarlı.",
+      "expectations": [
+        "Skill tetiklenir",
+        "Spec'te 'Hazırlık gerekmiyor' ya da eşdeğeri açıkça yazılır, gereksiz refactor önerilmez",
+        "Kabul kriterlerinde yetki (sadece admin görür) ve sayfalama yer alır",
+        "Onay gelmeden kod yazılmaz"
+      ]
+    }
+  ]
+}
