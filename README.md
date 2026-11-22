@@ -1,6 +1,6 @@
 # devmert7skills
 
-Kodlama ajanın için kurallar ve 5 skill. Claude Code, Codex, Cursor ve Copilot ile çalışır.
+Kodlama ajanın için kurallar ve 6 skill. Claude Code, Codex, Cursor ve Copilot ile çalışır.
 
 ```
 devmert7skills/
@@ -9,6 +9,7 @@ devmert7skills/
 └── .claude/skills/
     ├── prove-it/              yapılanı sade, kanıtlı ve kontrol edilebilir listeye çevirir (her iş için)
     ├── hata-kurala/           düzelttiğin hatayı AGENTS.md'ye tek satır kural yapar
+    ├── ne-anladin/            başlamadan isteğini geri söyler: hedef, problem, senin yerine vereceği kararlar
     ├── spec-once/             büyük işte kod yazmadan önce soru sorar, spec yazar
     ├── deploy-oncesi/         deploy öncesi kanıtlı kontrol listesi, deploy yapmaz
     └── react-perf-audit/      React arayüzü yavaşsa nedenini bulur, sadece rapor verir (İngilizce)
@@ -34,12 +35,13 @@ devmert7skills/
 
 ## Kullanım
 
-- Skill'ler kendiliğinden devreye girer. Elle çağırmak için: `/prove-it`, `/hata-kurala`, `/spec-once`, `/deploy-oncesi`, `/react-perf-audit`.
+- Skill'ler kendiliğinden devreye girer. Elle çağırmak için: `/prove-it`, `/hata-kurala`, `/ne-anladin`, `/spec-once`, `/deploy-oncesi`, `/react-perf-audit`.
 - Hangisi ne zaman:
   | Durum | Skill |
   |---|---|
   | Ajan "bitti" dedi ya da yaptığı işi uzun bir metinle anlattı (kod, araştırma, yazı, fark etmez) | prove-it |
   | Ajan aynı hatayı ikinci kez yaptı | hata-kurala |
+  | Kısa yazdın, ajanın seni anladığından emin değilsin ("ne anladın?") | ne-anladin: kod yazmadan hedefini, problemini ve senin yerine seçeceklerini söyler, onayını bekler |
   | İş büyük ya da belirsiz | spec-once |
   | "Canlıya alalım mı?" | deploy-oncesi: güvenlik, migration, secret, sunucu tarafı sorgular |
   | "Bu sayfa neden yavaş?" | react-perf-audit: re-render, istemci istek şelalesi (N+1), bundle, Core Web Vitals |
@@ -53,4 +55,4 @@ AGENTS.md 200 satırın altında kalsın (Claude Code'un önerisi). Her satır i
 
 ## İlham
 
-Bu paket, obra/superpowers, anthropics/claude-plugins-official, mattpocock/skills ve Vercel'in doğrulama sözleşmesinden fikir aldı. Yalnızca fikirler alındı, metinler yeniden yazıldı.
+Bu paket, obra/superpowers, anthropics/claude-plugins-official, mattpocock/skills, cursor/plugins içindeki pstack (`in-your-own-words`, MIT) ve Vercel'in doğrulama sözleşmesinden fikir aldı. Yalnızca fikirler alındı, metinler yeniden yazıldı.

@@ -1,0 +1,84 @@
+{
+  "skill_name": "ne-anladin",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "ne anladın? bu uygulamaya bildirim ekle",
+      "should_trigger": true,
+      "context": "Tek sayfalık bir alışkanlık uygulaması: index.html ve app.js. Alışkanlıklar localStorage'da, tıklayınca done true/false oluyor. done gün değişince hiç sıfırlanmıyor, tarih tutulmuyor. Sunucu yok.",
+      "expectations": [
+        "Skill tetiklenir",
+        "Yanıtta Hedefin, Çözmeye çalıştığın problem, Senin yerine vereceğim kararlar ve Yapmayacaklarım başlıkları var",
+        "Her kararın yanında ajanın seçeceği somut bir değer yazıyor; kararlar açık uçlu soru olarak sorulmuyor",
+        "Kararlardan biri bildirimin ne zaman geleceği, biri sekme kapalıyken gelip gelmeyeceği",
+        "Bir 'Dikkat' satırı done işaretlerinin gün değişince sıfırlanmadığını söylüyor",
+        "Yanıt 'Doğru anladım mı?' türünden tek bir soruyla bitiyor",
+        "Hiçbir dosya oluşturulmuyor ya da düzenlenmiyor; yanıtta uygulama kodu yok"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "/ne-anladin",
+      "should_trigger": true,
+      "context": "Kullanıcının önceki mesajı: 'giriş sayfasına şifremi unuttum ekle'. Proje Next.js; e-posta için Resend kurulu; users tablosunda email ve password_hash var, token tablosu yok.",
+      "expectations": [
+        "Skill tetiklenir",
+        "Önceki istek ('şifremi unuttum') geri söylenir, yeni bir konu açılmaz",
+        "Kararlar arasında bağlantının geçerlilik süresi ve token'ın nerede saklanacağı gibi somut seçimler var",
+        "Resend'in kurulu olduğu sorulmaz, koddan okunmuş olarak kullanılır",
+        "Hiçbir dosya değişmez, migration yazılmaz",
+        "Yanıt tek bir onay sorusuyla biter"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "beni doğru anladın mı? raporu PDF olarak da indirebilelim",
+      "should_trigger": true,
+      "expectations": [
+        "Skill tetiklenir",
+        "Dört başlık var, kararlar somut değerlerle yazılı (ör. hangi rapor, sayfa yönü, dosya adı biçimi)",
+        "Kod yazılmaz, onay beklenir"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "bu fonksiyon ne yapıyor?",
+      "should_trigger": false,
+      "context": "Kullanıcı src/price.ts içindeki calculateTotal fonksiyonunu soruyor.",
+      "expectations": [
+        "Skill tetiklenmez",
+        "Fonksiyon doğrudan açıklanır; Hedefin / Kararlar başlıkları kullanılmaz"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "bitti mi?",
+      "should_trigger": false,
+      "context": "Ajanın son mesajı: 'Arama kutusunu ekledim, testler geçiyor.'",
+      "expectations": [
+        "Skill tetiklenmez",
+        "Yanıt işin sonucunu ve kanıtını konu alır (prove-it'in alanı), isteği geri söylemez"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "README'deki yazım hatasını düzelt",
+      "should_trigger": false,
+      "expectations": [
+        "Skill tetiklenmez",
+        "Yazım hatası soru sorulmadan düzeltilir"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "saat 21 olsun, gerisi tamam",
+      "should_trigger": true,
+      "context": "Bir önceki turda ajan ne-anladin ile dört başlığı yazdı: hedef hatırlatma, kararlar 20:00 / sadece sekme açıkken / işaretlenmemiş alışkanlıklar, Dikkat: done sıfırlanmıyor.",
+      "expectations": [
+        "Ajan işe başlar; dört başlığı yeniden yazmaz ve yeni bir onay sorusu sormaz",
+        "Bildirim saati 21:00 olarak uygulanır, diğer kararlar ilk yazıldığı gibi kalır",
+        "Değişikliklerden sonra ne yapıldığı ve nasıl kontrol edileceği söylenir"
+      ]
+    }
+  ]
+}
